@@ -12,4 +12,6 @@ public interface ClienteInterface {
 	public Cliente buscar(String ide_cli);
 	
 	public List<Cliente> consultar(int categoria);
+	
+	public Cliente validar(String usuario, String clave);
 }

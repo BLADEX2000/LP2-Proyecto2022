@@ -36,9 +36,54 @@ public class Servlet_cliente extends HttpServlet {
 		case "lst": listar(request, response); break;
 		case "q" : buscar(request,response);break;
 		case "f": filtro(request,response);break;
+		case "log": login(request,response);break;
 		default:
 			
 		}
+	}
+
+
+	private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		String mail, clave;
+		
+		mail = request.getParameter("txtCorreo");
+		clave = request.getParameter("txtPassword");
+				
+		System.out.println("Su usuario es: " + mail + "\n" + "Su clave es: " + clave);
+		
+
+		
+		Cliente c=new GestionClientes().validar(mail, clave);
+		
+		/*if (c != null ) {
+			//request.setAttribute("c", c); 				//<-- a nivel de request
+			//request.getSession().setAttribute("c", c);	//	<-- a nivel de sesion
+			
+			response.sendRedirect("mantenimiento_cliente.jsp");
+			//request.getRequestDispatcher("principal.jsp").forward(request, response);
+		}
+			
+		else {				
+			//request.setAttribute("mensaje", 
+				//	"<div class='alert alert-danger' role='alert'> Usuario incorrecto </div>");
+			
+			request.getRequestDispatcher("Loginv2.jsp").forward(request, response);
+
+		}*/
+		
+				if (mail.equals("marco@gmail.com") && clave.equals("123145") )
+			
+			response.sendRedirect("mantenimiento_cliente.jsp");
+			
+		else {				
+			request.setAttribute("mensaje", 
+					"<div class='alert alert-danger' role='alert'> Usuario incorrecto </div>");
+			
+			request.getRequestDispatcher("Loginv2.jsp").forward(request, response);
+
+		}
+		
 	}
 
 

@@ -143,4 +143,38 @@ public class GestionClientes implements ClienteInterface{
 		return null;
 	}
 
+	@Override
+	public Cliente validar(String usuario, String clave) {
+		Cliente c=null;
+		// Plantilla de BD
+		Connection con=null;
+		PreparedStatement pst=null;
+		ResultSet rs= null;
+		
+		try {
+			con=MySQLConexion8.getConexion();
+			String sql="select * from tb_cliente where mail_cli=? and contra_cli=?";
+			pst=con.prepareStatement(sql);
+			
+			//Ya que hay un parametro, lo seteamos
+			pst.setString(1, usuario);
+			pst.setString(2, clave);
+			
+			rs=pst.executeQuery();
+			
+			//
+			if (rs.next()) {
+				c = new Cliente(rs.getString(1), rs.getString(2), rs.getString(3),
+						rs.getString(4), rs.getString(5), rs.getString(6), rs.getInt(7));
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Error al logear: "+e.getMessage());
+		}finally {
+			MySQLConexion8.closeConexion(con);
+		}
+		return c;
+	}
+
 }
