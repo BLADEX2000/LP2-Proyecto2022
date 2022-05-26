@@ -1,5 +1,6 @@
-/Interfaces/
-/Mantenimiento/
-/Models/
-/Servlet/
 /Utils/
+/utils/
+/servlet/
+/models/
+/mantenimiento/
+/interfaces/
