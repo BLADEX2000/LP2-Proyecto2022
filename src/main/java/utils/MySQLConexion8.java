@@ -1,4 +1,4 @@
-package Utils;
+package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +12,7 @@ public class MySQLConexion8 {
 		Connection con = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql://localhost:3306/cambiar?useSSL=false&useTimezone=true&serverTimezone=UTC";
+			String url = "jdbc:mysql://localhost:3306/ciberelectro?useSSL=false&useTimezone=true&serverTimezone=UTC";
 			String usr = "root";
 			String psw = "admin";
 			con = DriverManager.getConnection(url, usr, psw);
