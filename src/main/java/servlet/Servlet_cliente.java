@@ -37,9 +37,51 @@ public class Servlet_cliente extends HttpServlet {
 		case "q" : buscar(request,response);break;
 		case "f": filtro(request,response);break;
 		case "log": login(request,response);break;
+		case "reglog": reg_from_log(request,response);break;
 		default:
+			request.getSession().invalidate();
+			response.sendRedirect("Loginv2.jsp");
 			
 		}
+	}
+
+
+	private void reg_from_log(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ide_cli=request.getParameter("txtCodigo");
+		String nom_cli=request.getParameter("txtNombre");
+		String ape_cli=request.getParameter("txtApellido");
+		String mail_cli=request.getParameter("txtCorreo");
+		String contra_cli=request.getParameter("txtPassword");
+		String dire_cli=request.getParameter("txtDireccion");
+		int telefono_cli=Integer.parseInt(request.getParameter("txtCelular"));
+				
+		Cliente c2=new Cliente(ide_cli, nom_cli, ape_cli, mail_cli, contra_cli, dire_cli, telefono_cli);
+		
+		GestionClientes gc=new GestionClientes();
+		
+		int ok = gc.registrar(c2);
+	
+		if (ok==0) {
+			request.setAttribute("mensaje", 
+					"<div class='alert alert-danger alert-dismissible fade show' role='alert'>"
+					+ "  <strong>Error al registrar</strong> Revisa que los campos sean correctos"
+					+ "  <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>"
+					+ "</div>");
+					
+					
+			request.setAttribute("c2", c2);
+		}else {
+			request.setAttribute("mensaje", 
+					"<div class='alert alert-success alert-dismissible fade show' role='alert'>"
+							+ "  <strong>Cliente registrado exitosamente</strong>"
+							+ "  <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>"
+							+ "</div>");
+			
+			request.getRequestDispatcher("Loginv2.jsp").forward(request, response);
+		}
+		
+		
+		//request.getRequestDispatcher("mantenimiento_cliente.jsp").forward(request, response);
 	}
 
 
@@ -54,35 +96,23 @@ public class Servlet_cliente extends HttpServlet {
 		
 
 		
-		Cliente c=new GestionClientes().validar(mail, clave);
+		Cliente c2=new GestionClientes().validar(mail, clave);
 		
-		/*if (c != null ) {
-			//request.setAttribute("c", c); 				//<-- a nivel de request
-			//request.getSession().setAttribute("c", c);	//	<-- a nivel de sesion
-			
-			response.sendRedirect("mantenimiento_cliente.jsp");
-			//request.getRequestDispatcher("principal.jsp").forward(request, response);
-		}
-			
-		else {				
-			//request.setAttribute("mensaje", 
-				//	"<div class='alert alert-danger' role='alert'> Usuario incorrecto </div>");
-			
-			request.getRequestDispatcher("Loginv2.jsp").forward(request, response);
-
-		}*/
-		
-				if (mail.equals("marco@gmail.com") && clave.equals("123145") )
-			
+		if (c2!=null) {
+			request.getSession().setAttribute("c2", c2);
 			response.sendRedirect("mantenimiento_cliente.jsp");
 			
-		else {				
-			request.setAttribute("mensaje", 
-					"<div class='alert alert-danger' role='alert'> Usuario incorrecto </div>");
+		}
+		else {
+			request.setAttribute("mensajelog", 
+					"<div class='alert alert-danger alert-dismissible fade show' role='alert'>"
+							+ "  <strong>Usuario Incorrecto</strong>"
+							+ "  <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>"
+							+ "</div>");
 			
 			request.getRequestDispatcher("Loginv2.jsp").forward(request, response);
-
 		}
+		
 		
 	}
 
